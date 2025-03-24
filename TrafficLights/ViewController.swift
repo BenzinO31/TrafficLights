@@ -11,55 +11,58 @@ enum CurrentLight {
     case red, yellow, green
 }
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
 
-    @IBOutlet var redColorTrafficLights: UIView!
-    
-    @IBOutlet var yellowColorTrafficLights: UIView!
-    
-    @IBOutlet var greenColorTrafficLights: UIView!
+    @IBOutlet var redLightView: UIView!
+    @IBOutlet var yellowLightView: UIView!
+    @IBOutlet var greenLighjView: UIView!
     
     @IBOutlet var startButton: UIButton!
     
     private var currentLight = CurrentLight.red
+    private let lightIsOn = 1.0
+    private let lightIsOff = 0.3
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        redColorTrafficLights.alpha = 0.3
-        yellowColorTrafficLights.alpha = 0.3
-        greenColorTrafficLights.alpha = 0.3
-        
         startButton.layer.cornerRadius = 10
-        redColorTrafficLights.layer.cornerRadius = 75
-        yellowColorTrafficLights.layer.cornerRadius = 75
-        greenColorTrafficLights.layer.cornerRadius = 75
+        
+        redLightView.alpha = lightIsOff
+        yellowLightView.alpha = lightIsOff
+        greenLighjView.alpha = lightIsOff
+        
+//        redLightView.layer.cornerRadius = 75
+//        yellowLightView.layer.cornerRadius = 75
+//        greenLighjView.layer.cornerRadius = 75 в этом случае на разных устройствах будет меняться скругдение квадратов, по этому мы преминяем функцию ниже
+        print("Размеры стороны, доступные в методе viewDidLoad: \(redLightView.frame.height)")
     }
 
-    @IBAction func startButtonDitTapped(_ sender: UIButton) {
-        onClikButton()
-        sender.setTitle("NEXT", for: .normal)
+    override func viewWillLayoutSubviews() {
+        redLightView.layer.cornerRadius = redLightView.frame.width / 2
+        yellowLightView.layer.cornerRadius = yellowLightView.frame.width / 2
+        greenLighjView.layer.cornerRadius = greenLighjView.frame.width / 2
         
-    
+        print("Размеры стороны, доступные в методе viewWillLayoutSubviews: \(redLightView.frame.height)")
     }
     
-    private func onClikButton() {
+    @IBAction func startButtonDitTapped(_ sender: UIButton) {
+        sender.setTitle("NEXT", for: .normal)
         
         switch currentLight {
         case .red:
-            greenColorTrafficLights.alpha  = 0.3
-            redColorTrafficLights.alpha = 1
-            currentLight = CurrentLight.yellow
-            
+            greenLighjView.alpha  = lightIsOff
+            redLightView.alpha = lightIsOn
+            currentLight = .yellow
         case .yellow:
-            redColorTrafficLights.alpha = 0.3
-            yellowColorTrafficLights.alpha = 1
-            currentLight = CurrentLight.green
-            
+            redLightView.alpha = lightIsOff
+            yellowLightView.alpha = lightIsOn
+            currentLight = .green
         case .green:
-            yellowColorTrafficLights.alpha = 0.3
-            greenColorTrafficLights.alpha = 1
+            yellowLightView.alpha = lightIsOff
+            greenLighjView.alpha = lightIsOn
             currentLight = CurrentLight.red
         }
+    
     }
     
 }
