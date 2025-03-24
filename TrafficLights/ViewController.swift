@@ -45,8 +45,10 @@ final class ViewController: UIViewController {
         print("Размеры стороны, доступные в методе viewWillLayoutSubviews: \(redLightView.frame.height)")
     }
     
-    @IBAction func startButtonDitTapped(_ sender: UIButton) {
-        sender.setTitle("NEXT", for: .normal)
+    @IBAction func startButtonPressed() {
+        if startButton.currentTitle == "START" {
+            startButton.setTitle("NEXT", for: .normal)
+        }
         
         switch currentLight {
         case .red:
